@@ -1,26 +1,17 @@
 import { useEffect, useState } from 'react';
-import {  Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { FadeLoader, ScaleLoader } from 'react-spinners';
+import ReactImageFallback from 'react-image-fallback';
 
 const Home = () => {
     const [users, setUsers] = useState([]);
-    const [userInfo,setUserInfo]=useState();
+    const [userInfo, setUserInfo] = useState();
     const [loading, setLoading] = useState(true);
-    const brokenImg = 'https://i.ibb.co/C8QnRh2/img-not-found.png' || 'No data SHow';
+    const brokenImg = 'https://i.ibb.co/xSj0y8W/images-2.png' || 'No data SHow';
     const [activeIndex, setaActiveIndex] = useState(null);
-    const imgOnLoad = (e) => {
-        console.log(`sucess ${e.currentTarget.src} loaded.`);
-        if (e.currentTarget.className !== 'error') {
-            e.currentTarget.className = "success"
-        }
-    };
-    const imageOnError = (e) => {
-        e.currentTarget.src = brokenImg;
-        e.currentTarget.className = "error"
-    }
 
-    
+
 
     useEffect(() => {
         // Using Axios to fetch data
@@ -36,9 +27,9 @@ const Home = () => {
             });
     }, []);
 
-   
 
-    const handleDetails = (user,index) => {
+
+    const handleDetails = (user, index) => {
         console.log(user, "userinfo");
         setUserInfo(user);
         setaActiveIndex(index); // Set the active user ID
@@ -49,31 +40,46 @@ const Home = () => {
             {/* User List Div----- */}
             <Row className='p-2 p-md-0 p-lg-0 d-flex' style={{ marginTop: "10px" }}>
                 <Col xs={6} >
-                    <div style={{ backgroundColor: "orange",borderRadius:"6px",padding:"2px"}}>
-                        <p className='text-center fs-3 p-1 p-md-0 p-lg-0'>User List</p>
-                    </div>
+                <div  style={{color:"white", backgroundColor: "#016064", borderRadius: "6px", padding: "2px"  }}>
+    <p className='text-center fs-3 p-1 p-md-0 p-lg-0 '>User List</p>
+</div>
+
 
                     {loading ? (
                         // Display Spinner while loading data
 
                         <ScaleLoader className='d-flex justify-content-center align-items-center' size={1009} style={{ marginTop: '100px', marginBottom: "30px" }} color="blue " />
-                    ) : ( 
-                        users.map((user,index) =>
+                    ) : (
+                        users.map((user, index) =>
                             <div
                                 key={user.createdAt}
-                                onClick={() => handleDetails(user,index)}
+                                onClick={() => handleDetails(user, index)}
                                 style={{
-                                    backgroundColor: activeIndex === index ? "#CDCD74" : "#ECECEC",
+                                    backgroundColor: activeIndex === index ? "#C9BB8E" : "#ECECEC",
                                     cursor: 'pointer',
-                                  }}
-                             
+                                }}
+
                                 className='d-block d-md-flex d-lg-flex align-items-center gap-0 gap-md-3 gap-lg-3 mt-3 p-2 p-md-0 p-lg-0  '
-                            > 
-                            
-                            <p className='mt-0 mt-md-3 mt-lg-3 d-flex justify-content-center '>
-                                <img style={{ height: "50px", width: "50px", borderRadius: "150px", border: "1px dotted green" }} onLoad={imgOnLoad} onError={imageOnError} src={user.avatar} alt="Image not Found" />
+                            >
+
+                                <p className='mt-0 mt-md-3 mt-lg-3 d-flex justify-content-center '>
+
+                                    <ReactImageFallback
+                                        src={user.avatar}
+                                        fallbackImage={brokenImg}
+                                        initialImage={brokenImg}
+                                        alt="img not found"
+                                        className="my-image"
+                                        style={{ height: "50px", width: "50px", borderRadius: "150px", border: "1px solid #151E3D" }} />
+
+
+                              
+                              
+
+
+
                                 </p>
-                               
+
                                 <p className='mt-0 mt-md-3 mt-lg-3 text-center'>{user?.profile?.firstName || 'no data found'} {user?.profile?.lastName || 'no data found'}</p>
                             </div>
                         )
@@ -82,50 +88,64 @@ const Home = () => {
 
                 {/* User Details Div----- */}
                 <Col  >
-                
-                    <div className='w-50 w-md-50 w-lg-50 pe-5 mb-5' style={{position:"fixed"}} >
-                        <div style={{ backgroundColor: "orange",borderRadius:"6px", padding:"2px"}}>
+
+                    <div className='w-50 w-md-50 w-lg-50 pe-5 mb-5' style={{ position: "fixed" }} >
+                        <div style={{color:'white', backgroundColor: "#016064", borderRadius: "6px", padding: "2px" }}>
                             <p className='text-center fs-3 p-1 p-md-0 p-lg-0'>User Details</p>
                         </div>
-                        {userInfo ? 
-                        
-                        <div style={{ border: "1px dotted pink" }} className='px-2 px-md-5 px-lg-5 '>
-                            
+                        {userInfo ?
 
-                                    <div key={userInfo.createdAt}>
-                                        <div className='my-3'>
-                                            <p className='d-flex justify-content-center'><img style={{ height: "120px", width: "120px", borderRadius: "150px", border: "1px dotted green" }} onLoad={imgOnLoad} onError={imageOnError} src={userInfo.avatar} alt="Image not Found" /></p>
-                                            <h6 className='text-center'>@{userInfo?.profile?.username || 'no data found'}</h6>
+                            <div style={{ border: "1px dotted pink" }} className='px-2 px-md-5 px-lg-5 '>
 
 
-                                        </div>
-                                        <div className='mb-2' style={{ backgroundColor: "#DBDBDB", border: "1px solid teal", borderRadius: "5px" }}>
-                                            <p className='p-2 '> {userInfo.Bio}</p>
-                                        </div>
-                                        <div>
-                                            <p>Full Name</p>
-                                            <p className='p-2' style={{ borderRadius: '8px', border: '1px solid teal', background: '#DBDBDB', marginTop: "-10px", wordWrap: 'break-word' }}>{userInfo.profile.firstName} {userInfo?.profile?.lastName || 'no data found'}</p>
-                                        </div>
-                                        <div>
-                                            <p>Job Title</p>
-                                            <p className='p-2 ' style={{ borderRadius: '8px', border: '1px solid teal', background: '#DBDBDB', marginTop: "-10px", wordWrap: 'break-word' }}>{userInfo?.jobTitle || 'no data found'}</p>
-                                        </div>
-                                        <div >
-                                            <p>Email</p>
-                                            <p className='p-2  overflow-auto ' style={{ borderRadius: '8px', border: '1px solid teal', background: '#DBDBDB', marginTop: '-10px', whiteSpace: 'nowrap', overflowWrap: 'break-word' }}>
-                                                {userInfo?.profile?.email || 'no data found'}
-                                            </p>
+                                <div key={userInfo.createdAt}>
+                                    <div className='my-3'>
+                                        <p className='d-flex justify-content-center'>
 
-                                        </div>
+                                            <ReactImageFallback
+                                                src={userInfo.avatar}
+                                                fallbackImage={brokenImg}
+                                                initialImage={brokenImg}
+                                                alt="img not found"
+                                                className="my-image"
+                                                style={{ height: "120px", width: "120px", borderRadius: "150px", border: "1px dotted #151E3D" }} />
+
+                                            {/* <img style={{ height: "120px", width: "120px", borderRadius: "150px", border: "1px dotted green" }} src={userInfo.avatar} alt="Image not Found" /> */}
+
+
+
+                                        </p>
+                                        <h6 className='text-center'>@{userInfo?.profile?.username || 'no data found'}</h6>
+
+
                                     </div>
-                                
-                        </div>
+                                    <div className='mb-2' style={{ backgroundColor: "#DBDBDB", border: "1px solid teal", borderRadius: "5px" }}>
+                                        <p className='p-2 '> {userInfo.Bio}</p>
+                                    </div>
+                                    <div>
+                                        <p>Full Name</p>
+                                        <p className='p-2' style={{ borderRadius: '8px', border: '1px solid teal', background: '#DBDBDB', marginTop: "-10px", wordWrap: 'break-word' }}>{userInfo.profile.firstName} {userInfo?.profile?.lastName || 'no data found'}</p>
+                                    </div>
+                                    <div>
+                                        <p>Job Title</p>
+                                        <p className='p-2 ' style={{ borderRadius: '8px', border: '1px solid teal', background: '#DBDBDB', marginTop: "-10px", wordWrap: 'break-word' }}>{userInfo?.jobTitle || 'no data found'}</p>
+                                    </div>
+                                    <div >
+                                        <p>Email</p>
+                                        <p className='p-2  overflow-auto ' style={{ borderRadius: '8px', border: '1px solid teal', background: '#DBDBDB', marginTop: '-10px', whiteSpace: 'nowrap', overflowWrap: 'break-word' }}>
+                                            {userInfo?.profile?.email || 'no data found'}
+                                        </p>
 
-                        :
-                        <div className='d-flex justify-content-center align-items-center' style={{marginTop:"70px"}}> <FadeLoader color="#36d7b7" />
-                        </div>
-                        
-                       }
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            :
+                            <div className='d-flex justify-content-center align-items-center' style={{ marginTop: "70px" }}> <FadeLoader color="#36d7b7" />
+                            </div>
+
+                        }
                     </div>
 
                 </Col>
