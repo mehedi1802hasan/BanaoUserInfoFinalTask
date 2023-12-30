@@ -9,6 +9,7 @@ const Home = () => {
     const [userInfo, setUserInfo] = useState();
     const [loading, setLoading] = useState(true);
     const brokenImg = 'https://i.ibb.co/xSj0y8W/images-2.png' || 'No data SHow';
+    // const initialimg='https://i.ibb.co/6v2f3x5/abstract-surface-textures-white-concrete-stone-wall-74190-8189.jpg';
     const [activeIndex, setaActiveIndex] = useState(null);
 
 
