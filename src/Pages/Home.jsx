@@ -110,7 +110,7 @@ const Home = () => {
                                                 className="my-image"
                                                 style={{ height: "120px", width: "120px", borderRadius: "150px", border: "1px dotted #151E3D" }} />
 
-                                            {/* <img style={{ height: "120px", width: "120px", borderRadius: "150px", border: "1px dotted green" }} src={userInfo.avatar} alt="Image not Found" /> */}
+                                           
 
 
 
