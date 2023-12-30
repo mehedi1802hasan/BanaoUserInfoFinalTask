@@ -106,6 +106,8 @@ const Home = () => {
                                                 src={userInfo.avatar}
                                                 fallbackImage={brokenImg}
                                                 initialImage={brokenImg}
+
+                    // initialImage={<FadeLoader color={"#123abc"} loading={true} />}
                                                 alt="img not found"
                                                 className="my-image"
                                                 style={{ height: "120px", width: "120px", borderRadius: "150px", border: "1px dotted #151E3D" }} />
